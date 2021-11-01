@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+</head>
+
+<body style="height: 100%;">
+
+    <div style="width: 100%;height: 100%;" id="analyseEcharts">
+
+    </div>
+
+
+    <script>
+
+        var nodes = [{
+            name: 'node1'
+        },
+        {
+            name: 'node2'
+        }, {
+            name: 'node3'
+        }, {
+            name: 'node4'
+        }, {
+            name: 'node5'
+        },
+        {
+            name: 'node6'
+        }, {
+            name: 'node7'
+        }, {
+            name: 'node8'
+        }, {
+            name: 'node9'
+        }, {
+            name: 'node10'
+        }]
+
+        var links = [{
+            source: 0,
+            target: 1
+        }, {
+            source: 1,
+            target: 3
+        }, {
+            source: 2,
+            target: 3
+        }, {
+            source: 0,
+            target: 4
+        }, {
+            source: 4,
+            target: 5
+        }, {
+            source: 6,
+            target: 7
+        }, {
+            source: 0,
+            target: 8
+        },
+        {
+            source: 2,
+            target: 7
+        }, {
+            source: 0,
+            target: 1
+        }, {
+            source: 0,
+            target: 9
+        }]
+
+
+        nodes.map(item => {
+            
+            //图片
+            item.img = "./person_icon.png"
+
+            //设置节点的颜色边框
+            item.itemStyle = {
+                color: "#7A62A9",
+                borderColor: '#ff0000',
+                borderWidth: 3,
+
+            },
+                //设置节点显示内容
+                item.label = {
+                    show: true,
+
+                    position: "inside",
+                    color: "#fff",
+                    overflow: "break",
+
+                    formatter: function (data) {
+                        return "{a|" + data.data.name + "}\n{b|}";
+                    },
+
+                    rich: {
+                        a: {
+                            lineHeight: 20,
+                            align: "center",
+                        },
+                        b: {
+                            backgroundColor: { //设置图片
+                                image: item.img,
+                            },
+                            width: 20,
+                            height: 20,
+                            align: "center",
+                        },
+                    },
+                };
+        })
+
+        links.map(item=>{
+            //设置边线上方文字
+            item.value =  "关系",
+             //设置线的属性
+             item.lineStyle = {
+              normal: {
+                opacity: 1,
+                width: 2,
+                curveness: 0,
+                color: "#FFE896",
+              },
+            }
+            //设置线上文字位置属性
+            item.label = {
+              normal: {
+                show: true,
+                textStyle: { fontSize: 12, color: "#0F1A39" },
+                borderRadius: 15,
+                backgroundColor: "#FFE896",
+                verticalAlign: "bottom",
+              
+                padding: [5, 10],
+                formatter: "{c}",
+              },
+            }
+        })
+
+        let mapchart = echarts.init(document.getElementById("analyseEcharts"));
+
+        var option = {
+            series: [
+                {
+                    type: "graph",
+                    layout: "force",
+                    force: {
+                        repulsion: 1000, //节点之间的斥力因子。
+                        edgeLength: 200, //边的两个节点之间的距离
+                        layoutAnimation: true,
+                    },
+                    symbolSize: 80,
+                    nodeScaleRatio: 1, //图标大小是否随鼠标滚动而变
+                    roam: true, //缩放
+                    draggable: true, //节点是否可以拖拽
+                   
+                    symbolKeepAspect: false,//是否在缩放时保持该图形的长宽比
+                    data: this.nodes,
+                    links: this.links
+
+                },
+            ],
+        }
+
+        mapchart.setOption(option)
+
+
+
+    </script>
+
+</body>
+
+</html>
